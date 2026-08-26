@@ -62,10 +62,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     
         Goal: all systems repaired and robot at C.
         Movement cost is uniform in this problem.
-        
-        get succ
-        
-         Returns successor states, the actions they require, and a unit cost.
+       
             
         """
         

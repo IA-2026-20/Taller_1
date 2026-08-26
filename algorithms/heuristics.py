@@ -11,6 +11,12 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+def manhattanDistance(a, b):
+    """
+    Manhattan distance between two (x, y) positions.
+    """
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
 
 def manhattanHeuristic(state, problem):
     """
@@ -22,18 +28,14 @@ def manhattanHeuristic(state, problem):
     - the nearest pending T if the robot has the kit and systems remain.
     - C if all systems have been repaired.
     """
-    x0, y0 = state[0]
     if not state[1]:
-        x1, y1 = problem.kitPosition
-        return abs(x0 - x1) + abs(y0 - y1)
+        return manhattanDistance(state[0], problem.kitPosition)
     else:
         if not state[2]:
-            x1, y1 = problem.controlPosition
-            return abs(x0 - x1) + abs(y0 - y1)
+            return manhattanDistance(state[0], problem.controlPosition)
         mini = math.inf
         for s in state[2]:
-            x1, y1 = s
-            distance = abs(x0 - x1) + abs(y0 - y1)
+            distance = manhattanDistance(state[0], s)
             if distance < mini:
                 mini = distance
         return mini
@@ -67,7 +69,7 @@ def euclideanHeuristic(state, problem):
    
    
    
-   
+   #de pronto esta
 def systemRepairHeuristic(
     state: Tuple[Tuple, bool, Tuple], problem: SystemRepairProblem
 ):
@@ -85,5 +87,11 @@ def systemRepairHeuristic(
     - Consider the kit, pending systems, and the final return to control center
     - Balance heuristic strength vs. computation time (do experiments!)
     """
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    if not state[2]:
+        return manhattanDistance(state[0], problem.controlPosition)
+    if state[1]:
+        return max( manhattanDistance(state[0], t) 
+        + manhattanDistance(t, problem.controlPosition) for t in state[2])
+
+    return manhattanDistance(state[0], problem.kitPosition) + max( manhattanDistance(problem.kitPosition, t) 
+    + manhattanDistance(t, problem.controlPosition) for t in state[2])
