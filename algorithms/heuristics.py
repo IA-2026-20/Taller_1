@@ -69,7 +69,7 @@ def euclideanHeuristic(state, problem):
    
    
    
-   #de pronto esta
+
 def systemRepairHeuristic(
     state: Tuple[Tuple, bool, Tuple], problem: SystemRepairProblem
 ):
