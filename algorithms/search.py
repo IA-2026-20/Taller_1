@@ -1,6 +1,7 @@
 from algorithms.problems import SearchProblem
 import algorithms.utils as utils
 from world.game import Directions
+from algorithms.utils import Stack, Queue
 from algorithms.heuristics import nullHeuristic
 
 
@@ -28,16 +29,46 @@ def depthFirstSearch(problem: SearchProblem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    frontera = Stack()
+    frontera.push((problem.getStartState(), []))
+    visitados = set()
+
+    while not frontera.isEmpty():
+        estado, acciones = frontera.pop()
+
+        if problem.isGoalState(estado):
+            return acciones
+
+        if estado not in visitados:
+            visitados.add(estado)
+            for siguiente, accion, z in problem.getSuccessors(estado):
+                if siguiente not in visitados:
+                    frontera.push((siguiente, acciones + [accion]))
+
+    return []
 
 
 def breadthFirstSearch(problem: SearchProblem):
     """
     Search the shallowest nodes in the search tree first.
     """
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    frontera = Queue()
+    estado_ini = problem.getStartState()
+    frontera.push((estado_ini, []))
+    visitados = set([estado_ini])
+
+    while not frontera.isEmpty():
+        estado, acciones = frontera.pop()
+
+        if problem.isGoalState(estado):
+            return acciones
+
+        for siguiente, accion, z in problem.getSuccessors(estado):
+            if siguiente not in visitados:
+                visitados.add(siguiente)
+                frontera.push((siguiente, acciones + [accion]))
+
+    return []
 
 
 def uniformCostSearch(problem: SearchProblem):
