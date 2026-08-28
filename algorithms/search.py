@@ -128,7 +128,6 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
         visited.add(state)
 
         if problem.isGoalState(state):
-            print(actions, problem.getCostOfActions(actions))
             return actions
 
         for s, a, c in problem.getSuccessors(state):
